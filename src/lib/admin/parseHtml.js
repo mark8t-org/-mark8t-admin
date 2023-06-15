@@ -3,7 +3,7 @@ let phpStore = writable('');
 let phpCache = {};
 
 import * as htmlparser2 from 'htmlparser2';
-// import SHA256 from 'crypto-js/sha256';
+import SHA256 from 'crypto-js/sha256';
 
 import { Parser } from 'htmlparser2';
 
