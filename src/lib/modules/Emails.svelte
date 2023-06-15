@@ -8,6 +8,11 @@
 	import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
 	import Button from '@smui/button';
 
+	// import Quill from 'quill';
+
+	import { Utils } from '@mark8t/core';
+	import { emailsWithRestParamaters } from '../emails';
+
 	type User = {
 		id: number;
 		name: string;
@@ -15,39 +20,11 @@
 		email: string;
 		website: string;
 	};
-	let items: User[] = [];
-	let loaded = false;
 
-	loadThings(false);
-
-	function loadThings(wait: boolean) {
-		if (typeof fetch !== 'undefined') {
-			loaded = false;
-
-			fetch(
-				'https://gist.githubusercontent.com/hperrin/e24a4ebd9afdf2a8c283338ae5160a62/raw/dcbf8e6382db49b0dcab70b22f56b1cc444f26d4/users.json'
-			)
-				.then((response) => response.json())
-				.then((json) =>
-					setTimeout(
-						() => {
-							items = json;
-							loaded = true;
-						},
-						// Simulate a long load time.
-						wait ? 2000 : 0
-					)
-				);
-		}
-	}
+	const api = import.meta.env.VITE_API_URL;
 
 	let reverse = false;
 	let output = '';
-
-	// import Quill from 'quill';
-
-	import { Utils } from '@mark8t/core';
-	import { emailsWithRestParamaters } from '../emails';
 
 	let selectedEmailType =
 		localStorage.getObject('--admin-emails-selectedEmailType') ||
@@ -61,8 +38,8 @@
 
 	let fileNames = createFileNames(Utils.Schema._EMAILS_LISTING_);
 	let emailPreview = '';
+	let emailPreviewLink = base + '/admin/EmailsPreview';
 	let lang = 'en';
-	const api = import.meta.env.VITE_API_URL;
 
 	const importEmailTemplate = () => {
 		let emailtemplateTestUrl = '';
@@ -137,7 +114,7 @@
 
 	<hr />
 	<p>
-		<small><a href={base + '/admin/emails/preview'}>Preview the email templates.</a></small>
+		<small><a href={emailPreviewLink}>Preview the email templates.</a></small>
 		<br />
 		<small>Enable or disable various automated emails. </small>
 	</p>
@@ -148,7 +125,7 @@
 			<Row>
 				<Cell numeric>ID</Cell>
 				<Cell style="width: 100%;">Name</Cell>
-				<Cell>Username</Cell>
+				<Cell>Enabled</Cell>
 			</Row>
 		</Head>
 		<Body>
@@ -173,11 +150,11 @@
 <hr />
 
 <style lang="scss">
-	.pointer {
+	:global(.pointer) {
 		cursor: pointer;
 	}
 
-	.indent {
+	:global(.indent) {
 		margin-left: 3rem;
 		line-height: 2.8rem;
 	}

@@ -128,7 +128,7 @@
 {#if localAccountId}
 	{#if localAccountHasAdminPermissions}
 		<Layout {override} account={localAccount}>
-			<Breadcrumbs />
+			<!-- <Breadcrumbs /> -->
 			<slot />
 		</Layout>
 		<!-- <div class="submenu">
