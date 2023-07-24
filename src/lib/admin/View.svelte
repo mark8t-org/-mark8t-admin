@@ -18,8 +18,8 @@
 	import Accordion, { Panel, Header, Content } from '@smui-extra/accordion';
 	// import List, { Item, Text, Graphic, Separator, Subheader } from '@smui/list';
 
-	import Account from '../modules/Account.svelte';
-	import Contact from '../modules/Contact.svelte';
+	// import Account from '../modules/Account.svelte';
+	// import Contact from '../modules/Contact.svelte';
 
 	import Quote from './Quote.svelte';
 	import './View.svelte.scss?inline';
@@ -35,6 +35,11 @@
 	// import { _NEW_PRODUCT_ } from '../../schema.js';
 
 	import { Stores } from '@mark8t/core';
+
+	const Account = Stores.Account;
+	const Website = Stores.Website;
+	const Products = Stores.Products.Catelogue;
+	const Google = Stores.Google;
 
 	export let override = false;
 
@@ -94,22 +99,23 @@
 	// 	getAccountDataFromLocalStorage,
 	// 	_API_STORE_ACCOUNT_,
 	// 	_API_STORE_WEBSITE_,
-	// 	_API_STORE_PRODUCTS_,
+	// 	_API_Catelogue_,
 	// 	_API_STORE_GOOGLE_
 	// } from '../../stores.js';
 	import Overview from './Overview.svelte';
 	import OverviewModules from './OverviewModules.svelte';
 	import SavedChanges from './SavedChanges.svelte';
-	Stores.Account.subscribe((value) => {
+	Account.subscribe((value) => {
 		account = value || {};
 	});
-	Stores.Website.STORE_WEBSITE.subscribe((value) => {
+	Website.subscribe((value) => {
 		website = value || {};
 	});
-	Stores.Products.STORE_PRODUCTS.subscribe((value) => {
+	console.log(Products);
+	Products.subscribe((value) => {
 		products = value || [];
 	});
-	Stores.Website.STORE_GOOGLE.subscribe((value) => {
+	Website.subscribe((value) => {
 		google = value || {};
 	});
 

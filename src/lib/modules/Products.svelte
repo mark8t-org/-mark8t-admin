@@ -28,6 +28,13 @@
 
 	// import { _NEW_PRODUCT_ } from '../../schema.js';
 	import { Utils, Stores } from '@mark8t/core';
+
+	const Products = Stores.Products.Catelogue;
+	const Website = Stores.Website;
+	const Google = Stores.Google;
+	const Account = Stores.Account;
+
+	export let override = false;
 	let productContainer;
 	let layoutContainer;
 
@@ -49,21 +56,8 @@
 	let open = false;
 	let active = 'Inbox';
 
-	let panelInfo = false;
 	let panelProducts = false;
-	let pFeatured = false;
-	let panel1Open = false;
-	let panelContactInfo = false;
-	let panel3Open = false;
-	let panel4Open = false;
-	let panelLayouts = false;
-	let panelWebsite = false;
 
-	// let account;
-	// let email = '';
-	// let name = '';
-	// let tenant = '';
-	// let tenantid = '';
 	let layoutSelected;
 	$: account = {};
 	$: google = {};
@@ -80,13 +74,11 @@
 		}
 	];
 
+	let AreYouSureChanges = 'are you sure you want to change this?';
+
 	// import {
 	// 	fetchAdmin,
 	// 	getAccountDataFromLocalStorage,
-	// 	_API_STORE_ACCOUNT_,
-	// 	_API_STORE_WEBSITE_,
-	// 	_API_STORE_PRODUCTS_,
-	// 	_API_STORE_GOOGLE_
 	// } from '../../stores.js';
 	import Overview from '../admin/Overview.svelte';
 	import OverviewModules from '../admin/OverviewModules.svelte';
@@ -117,24 +109,9 @@
 		layoutSelected = JSON.parse(localStorage.getObject('--data-layoutSelected')) || layouts[0];
 	}
 
-	// //
-	// function getAccountInfo() {
-	//   name = account.name;
-	//   email = account.username;
-	//   tenantid = account.localAccountId;
-	// }
-
 	//
 	function getPanelInfo() {
-		panelInfo = localStorage.getObject('--panel--panelInfo');
 		panelProducts = localStorage.getObject('--panel--panelProducts');
-		panel1Open = localStorage.getObject('--panel--panel1Open');
-		panelContactInfo = localStorage.getObject('--panel--panelContactInfo');
-		panel3Open = localStorage.getObject('--panel--panel3Open');
-		panel4Open = localStorage.getObject('--panel--panel4Open');
-		panelLayouts = false; // localStorage.getObject("--panel--panelLayouts");
-		panelWebsite = localStorage.getObject('--panel--panelWebsite');
-		pFeatured = localStorage.getObject('--panel--featured');
 	}
 
 	// scroll product section when hovering with mouse and using scroll wheel
@@ -152,7 +129,8 @@
 
 	//
 	const unsavedAreYouSureChanges = () => {
-		if (confirm('are you sure you want to change this?')) {
+		// if (confirm($Translations.AreYouSureChanges)) {
+		if (confirm(AreYouSureChanges)) {
 			unsavedChanges();
 		} else {
 			getLatestDataFromLocalStorage();
@@ -227,7 +205,6 @@
 	//     "saved-changes"
 	//   ).style = `position:absolute;top: ${scrollPosition}px;`;
 	// };
-	export let override = false;
 
 	onMount(() => {
 		//TODO
@@ -238,19 +215,6 @@
 		// getWebsiteInfoFromJson();
 		// getProductsInfoFromJson();
 		// getGoogleInfoFromJson();
-
-		Stores.Account.subscribe((value) => {
-			account = value || {};
-		});
-		Stores.Website.STORE_WEBSITE.subscribe((value) => {
-			website = value || {};
-		});
-		Stores.Products.STORE_PRODUCTS.subscribe((value) => {
-			products = value || [];
-		});
-		Stores.Website.STORE_GOOGLE.subscribe((value) => {
-			google = value || {};
-		});
 	});
 </script>
 
@@ -309,7 +273,7 @@
 				</ActionButtons>
 			</Actions>
 		</Card>
-		{#each products as product, i}
+		{#each $Products as product, i}
 			<Product {product} {removeProduct} {unsavedChanges} />
 		{/each}
 	</Content>

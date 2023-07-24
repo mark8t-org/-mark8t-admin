@@ -1,50 +1,26 @@
-<script>
+<script lang="ts">
 	import Menu from '@smui/menu';
 	import List, { Item, Separator, Text } from '@smui/list';
-
-	import Quote from './Quote.svelte';
-	// import Button, { Label } from '@smui/button';
-	// import { onMount } from 'svelte';
-
-	$: account = {};
-	$: website = {};
-	// import TopNavbar from './TopNavbar.svelte';
 	import { Stores } from '@mark8t/core';
-	import { onMount } from 'svelte';
-
-	let username;
-	let usernameInititals;
-
+	const Website = Stores.Website;
+	const Account = Stores.Account;
 	let menu;
-
-	onMount(() => {
-		Stores.Account.subscribe((value) => {
-			account = value || [];
-
-			username = account.name || 'Admin';
-			usernameInititals =
-				username
-					?.split(' ')
-					?.map((word) => word[0])
-					?.join('') || '';
-		});
-		Stores.Website.STORE_WEBSITE.subscribe((value) => {
-			website = value || {};
-		});
-	});
+	function getMultiNameInitials(name) {
+		return name
+			?.split(' ')
+			?.map((word) => word[0])
+			?.join('');
+	}
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-	<a class="navbar-brand" href="/">{website?.siteName}</a>
-	<!-- <div class="ml-auto">
-		<smaller><Quote /></smaller>
-	</div> -->
+	<a class="navbar-brand" href="/">{$Website?.siteName}</a>
 	<div class="btn-group ml-auto dropleft">
 		<!-- <button type="button" id="signIn" class="btn btn-secondary" onclick="window.signIn()">Sign-in</button> -->
 		<button type="button" id="signOut" class="btn btn-primary" on:click={() => menu.setOpen(true)}>
-			<span>{username}</span>
+			<span>{$Account?.name}</span>
 			<h5 id="label" class="user-name-circle">
-				{usernameInititals || ''}
+				{getMultiNameInitials($Account?.name)}
 			</h5>
 		</button>
 		<Menu bind:this={menu} style="margin-top:46px;">

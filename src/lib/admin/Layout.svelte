@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import View from './View.svelte';
 	// import DynamicForm from "../form/DynamicForm.svelte";
@@ -9,6 +9,7 @@
 
 	let clicked = 'nothing yet';
 
+	export let override = false;
 	export let account;
 	const username = account.name || 'Admin';
 	const usernameInititals =
@@ -17,17 +18,11 @@
 			?.map((word) => word[0])
 			?.join('') || '';
 
-	$: account = {};
-	$: website = {};
-
 	import { Stores } from '@mark8t/core';
 	import TopNavbar from './TopNavbar.svelte';
-	Stores.Account.subscribe((value) => {
-		account = value || [];
-	});
-	Stores.Website.STORE_WEBSITE.subscribe((value) => {
-		website = value || {};
-	});
+
+	let Account = Stores.Account;
+	let Website = Stores.Website;
 
 	let people = [
 		{ first: 'Hans', last: 'Emil' },
@@ -78,11 +73,9 @@
 	}
 
 	onMount(() => {});
-
-	export let override = false;
 </script>
 
-<TopNavbar {account} {website} />
+<TopNavbar account={$Account} website={$Website} />
 
 <View {override}>
 	<slot />

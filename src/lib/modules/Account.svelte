@@ -4,14 +4,14 @@
 	import IconButton, { Icon } from '@smui/icon-button';
 
 	import { Components, Stores } from '@mark8t/core';
+
 	export let unsavedChanges;
 	export let overrideOpenState = false;
 
+	let { Account, Website } = Stores;
+
 	let panelInfo = false;
 	panelInfo = localStorage.getObject('--panel--panelInfo');
-	let panelContactInfo = localStorage.getObject('--panel--panelContactInfo');
-	let account = {};
-	let website = {};
 
 	//...
 	function unsavedAreYouSureChanges() {
@@ -23,16 +23,6 @@
 	}
 
 	if (overrideOpenState) panelInfo = true;
-	//...
-	onMount(() => {
-		Stores.Account.subscribe((value) => {
-			account = value || {};
-			console.log(value);
-		});
-		Stores.Website.STORE_WEBSITE.subscribe((value) => {
-			website = value;
-		});
-	});
 </script>
 
 <Panel
@@ -49,12 +39,12 @@
 		</IconButton>
 	</Header>
 	<Content>
-		<Components.Web.Static.Input label="Name" bind:value={account.name} disabled={true} />
-		<Components.Web.Static.Input label="Username" bind:value={account.username} disabled={true} />
-		<Components.Web.Static.Input label="Tenant" bind:value={website.siteName} disabled={true} />
+		<Components.Web.Static.Input label="Name" value={$Account?.name} disabled={true} />
+		<Components.Web.Static.Input label="Username" value={$Account?.username} disabled={true} />
+		<Components.Web.Static.Input label="Tenant" value={$Website?.siteName} disabled={true} />
 		<Components.Web.Static.Input
 			label="Tenant ID"
-			bind:value={account.localAccountId}
+			value={$Account?.localAccountId}
 			disabled={true}
 		/>
 	</Content>
