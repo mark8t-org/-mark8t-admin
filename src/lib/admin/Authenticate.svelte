@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { msalConfig, apiConfig, loginRequest, tokenRequest } from '../../msal.config.js';
+	import { msalConfig, apiConfig, loginRequest, tokenRequest } from '../msal.config.js';
 	import { Stores } from '@mark8t/core';
 
 	let username = '';
