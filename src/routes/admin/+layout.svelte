@@ -1,23 +1,20 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Login, Logout } from '$lib/components';
 	import Styles from '$lib/components/Styles.svelte';
 
-	import Content from '$lib/components/dashboards/Content.svelte';
+	// import Content from '$lib/components/dashboards/Content.svelte';
 
-	let Core: typeof any;
-	let Admin: typeof any;
+	import type Mark8tCore from '@mark8t/core';
+	import type Mark8tAdmin from '../../lib/index';
 
-	let menuActive = false;
+	let Core: typeof Mark8tCore;
+	let Admin: typeof Mark8tAdmin;
 
-	const toggleMenu = () => {
-		menuActive = !menuActive;
-	};
 	export let data;
 
 	onMount(() => {
-		Core = data.props?.Core as typeof any;
-		Admin = data.props?.Admin as typeof any;
+		Core = data.props?.Core as typeof Mark8tCore;
+		Admin = data.props?.Admin as typeof Mark8tAdmin;
 	});
 </script>
 

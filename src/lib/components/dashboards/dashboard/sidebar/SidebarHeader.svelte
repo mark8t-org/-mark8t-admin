@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Login from '$lib/components/Login.svelte';
-	import Logout from '$lib/components/Logout.svelte';
 
 	export let Core: typeof any;
 	$: Account = Core?.Stores.Account;
