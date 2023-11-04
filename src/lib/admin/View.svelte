@@ -283,7 +283,7 @@
 
 <!-- <svelte:window bind:scrollY={scrollPosition} /> -->
 
-<DialogForEditing
+<!-- <DialogForEditing
 	{data}
 	open={openDialogForEditing}
 	onSave={onSaveProducts}
@@ -298,7 +298,7 @@
 		removeProduct(id);
 		unsavedChanges();
 	}}
-/>
+/> -->
 <SavedChanges
 	bind:open
 	bind:centered

@@ -39,13 +39,13 @@
 		</IconButton>
 	</Header>
 	<Content>
-		<Components.Web.Static.Input label="Name" value={$Account?.name} disabled={true} />
+		<!-- <Components.Web.Static.Input label="Name" value={$Account?.name} disabled={true} />
 		<Components.Web.Static.Input label="Username" value={$Account?.username} disabled={true} />
 		<Components.Web.Static.Input label="Tenant" value={$Website?.siteName} disabled={true} />
 		<Components.Web.Static.Input
 			label="Tenant ID"
 			value={$Account?.localAccountId}
 			disabled={true}
-		/>
+		/> -->
 	</Content>
 </Panel>

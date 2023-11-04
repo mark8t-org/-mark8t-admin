@@ -11,7 +11,7 @@
 
 	export let override = false;
 	export let account;
-	const username = account.name || 'Admin';
+	const username = account?.name || 'Admin';
 	const usernameInititals =
 		username
 			?.split(' ')
@@ -75,7 +75,6 @@
 	onMount(() => {});
 </script>
 
-<TopNavbar account={$Account} website={$Website} />
 
 <View {override}>
 	<slot />

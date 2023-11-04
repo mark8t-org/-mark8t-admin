@@ -29,9 +29,9 @@
 	if (overrideOpenState) panelWebsite = true;
 
 	onMount(() => {
-		Stores.Website.STORE_WEBSITE.subscribe((value) => {
-			website = value || {};
-		});
+		// Stores.Website.STORE_WEBSITE.subscribe((value) => {
+		// 	website = value || {};
+		// });
 	});
 </script>
 
@@ -49,7 +49,7 @@
 				<Icon class="material-icons">expand_more</Icon>
 			</IconButton>
 		</Header>
-		<Content class="mdc-typography--body2">
+		<!-- <Content class="mdc-typography--body2">
 			{#each Object.entries(standardFields) as [key, value]}
 				<Components.Web.Static.Input
 					bind:value={website[key]}
@@ -57,6 +57,6 @@
 					input={unsavedChanges}
 				/>
 			{/each}
-		</Content>
+		</Content> -->
 	</Panel>
 </Accordion>

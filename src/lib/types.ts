@@ -37,3 +37,10 @@ export type EmailsWithRestParameters = EmailWithRestParams & {
 	'order-delivered': string;
 	'order-returned': string;
 };
+export type Theme = {
+	title: string;
+	image: string;
+	subtitle: string;
+	colour: string;
+	css?: string;
+};

@@ -1,22 +1,36 @@
 <script>
 	import { base } from '$app/paths';
+	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 
-	import Layout from './admin/Layout.svelte';
-	import Authenticate from './admin/Authenticate.svelte';
-	import Analytics from './admin/Analytics.svelte';
 	import { Components, Stores } from '@mark8t/core';
+
+	import TopNavbar from './admin/TopNavbar.svelte';
+	import Content from './admin/Layout.svelte';
+	import Analytics from './admin/Analytics.svelte';
+
 	import Breadcrumbs from './admin/Breadcrumbs.svelte';
+	// import Content from './components/Content.svelte';
+	import Layout from './components/dashboards/dashboard/Layout.svelte';
 	// import { fetchSecretsFromJson } from '@mark8t/core/src/lib/store/stores.js';
+
+	// loop through the files in ./modules/ creating an array of the names
+	import * as modules from './modules/index';
+	import DynamicLayout from './components/dashboards/dashboard/DynamicLayout.svelte';
+	const adminPanels = Object.keys(modules.default);
+
+	export let Core;
+	$: Account = Stores.Account;
+	$: Website = Stores.Website;
+
+	import { Theme } from './services';
 
 	let reconnectionAttempts = 0;
 	let localAccount = {};
-	let localAccountId = '';
-	let localAccountName;
+	// let localAccountId = '';
+	// let localAccountName;
 	let localAccountPermissions;
-	let localAccountHasAdminPermissions = false;
-
-	$: website = {};
+	let localAccountHasAdminPermissions = true;
 
 	// Stores.Website.STORE_WEBSITE.subscribe((value) => {
 	// 	website = value || {};
@@ -78,13 +92,22 @@
 	 * else fetch permissions from mark8t.ca/storage/{tenant}/auth.users.json
 	 */
 	const retrieveLocaldata = async () => {
-		await interceptSecret();
+		// await interceptSecret();
 
-		let account = localStorage.getObject('accounts', window.signIn);
-		localAccount = account;
-		localAccountId = account?.localAccountId || null;
-		localAccountName = account?.name;
+		// let account = localStorage.getObject('accounts', window.signIn);
+		// localAccount = $Account;
+		// localAccountId = $Account?.localAccountId || null;
+		// localAccountName = $Account?.name;
+		// localAccountHasAdminPermissions = true;
 
+		// console.log($Account);
+
+		return;
+
+		console.log(
+			'Admin - retrieveLocaldata - localAccountHasAdminPermissions - ',
+			localAccountHasAdminPermissions
+		);
 		if (localAccountName && localAccountId && !localAccountHasAdminPermissions) {
 			// localAccountPermissions = await (await fetch('../api/users.auth.json')).json();
 			// localAccountHasAdminPermissions = localAccountPermissions.ids.includes(localAccountId);
@@ -117,39 +140,33 @@
 		} else {
 			console.log('Admin - user has admin permissions');
 		}
+		console.log(Theme);
 	});
 	export let override = false;
 	export let data = {};
 </script>
 
-<Components.SEO title="Admin" description="Admin" image="https://mark8t.com/images/og-image.jpg" />
+<Components.SEO title="Admin" />
 <!-- <Drawer /> -->
 <!-- <Analytics /> -->
-{#if localAccountId}
+{#if $Account?.localAccountId}
+	<!-- <TopNavbar account={$Account} website={$Website} /> -->
 	{#if localAccountHasAdminPermissions}
-		<Layout {override} account={localAccount}>
-			<!-- <Breadcrumbs /> -->
-			<slot />
-		</Layout>
-		<!-- <div class="submenu">
-			{#each data?.sections as section}
-				<a href="/dev/admin/{section.slug}">{section.title}</a>
-			{/each}
-		</div> -->
+		<!-- <Breadcrumbs /> -->
+		<div style="display: contents">
+			<DynamicLayout {override} {Core} layoutType={'layout' + (Theme.get().id || 0)}>
+				{#if !$page.url.pathname.includes('/admin/')}
+					<!-- <Content focus="Account" /> -->
+				{/if}
+				<slot />
+			</DynamicLayout>
+		</div>
+		<!-- <Content></Content> -->
 	{:else if reconnectionAttempts < 2}
 		<Components.Spinner message={'checking permissions'} />
 	{:else}
 		<Components.Spinner message={'redirecting'} />
 	{/if}
-{:else}
-	<!-- <Components.Spinner /> -->
-	<Authenticate
-		localAccountHasAdminPermissions={localAccountPermissions}
-		onSuccess={async (more) => {
-			await more();
-			await retrieveLocaldata();
-		}}
-	/>
 {/if}
 
 <style>

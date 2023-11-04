@@ -19,9 +19,9 @@
 		}
 	};
 	onMount(() => {
-		Stores.Website.STORE_GOOGLE.subscribe((value) => {
-			google = value || {};
-		});
+		// Stores.Website.STORE_GOOGLE.subscribe((value) => {
+		// 	google = value || {};
+		// });
 	});
 </script>
 
@@ -59,7 +59,7 @@
 					>These are the secrets that are used to enable google components on your webpage. <br />
 				</small>
 			</p>
-			<Components.Web.Static.Input
+			<!-- <Components.Web.Static.Input
 				type="password"
 				label="Calendar ICS"
 				class="w-100"
@@ -106,7 +106,7 @@
 				bind:value={google.tagId}
 				enter={unsavedAreYouSureChanges}
 				input={unsavedChanges}
-			/>
+			/> -->
 		</Content>
 	</Panel>
 
@@ -152,13 +152,13 @@
 				<small
 					>These are the secrets that are used to enable special access to this admin panel. <br />
 				</small>
-				<Components.Web.Static.Input
+				<!-- <Components.Web.Static.Input
 					type="promotion"
 					label=""
 					class="w-50"
 					value={'PEON'}
 					disabled
-				/>
+				/> -->
 			</p></Content
 		>
 	</Panel>

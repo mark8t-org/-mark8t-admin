@@ -27,9 +27,9 @@
 		Stores.Account.subscribe((value) => {
 			account = value || {};
 		});
-		Stores.Website.STORE_WEBSITE.subscribe((value) => {
-			website = value || {};
-		});
+		// Stores.Website.STORE_WEBSITE.subscribe((value) => {
+		// 	website = value || {};
+		// });
 		if (overrideOpenState) panelInfo = true;
 	});
 </script>
@@ -50,7 +50,7 @@
 		</IconButton>
 	</Header>
 	<Content>
-		<Components.Web.Static.Input
+		<!-- <Components.Web.Static.Input
 			label="Phone"
 			class="w-100"
 			type="tel"
@@ -76,6 +76,6 @@
 			class="w-100"
 			bind:value={website.siteContactInstagram}
 			input={unsavedChanges}
-		/>
+		/> -->
 	</Content>
 </Panel>
