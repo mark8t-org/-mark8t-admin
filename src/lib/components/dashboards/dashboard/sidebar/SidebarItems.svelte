@@ -1,5 +1,5 @@
 <script>
-	import { data } from './data';
+	import { data } from '../../../../data';
 	import { page } from '$app/stores';
 
 	export let theme;

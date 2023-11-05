@@ -2,7 +2,7 @@
 	import { openSidebar } from './store';
 </script>
 
-<header class="h-16 md:h-20 items-center relative w-full z-10">
+<header class="hidden h-16 md:h-20 items-center relative w-full z-10">
 	<div
 		class="
         flex
@@ -27,6 +27,7 @@
         "
 		>
 			<div class="container flex left-0 relative w-3/4">
+				<!-- HAMBURGER -->
 				<div class="flex group h-full items-center relative w-12">
 					<button
 						type="button"
@@ -38,8 +39,10 @@
 						&#8801;
 					</button>
 				</div>
+				<!-- SEARCH -->
 				<div
 					class="
+					hidden
               group
               h-full
               items-center
