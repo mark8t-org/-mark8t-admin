@@ -1,62 +1,44 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
-
-	import Accordion, { Panel, Header, Content } from '@smui-extra/accordion';
-	import IconButton, { Icon } from '@smui/icon-button';
-	import Textfield from '@smui/textfield';
-
-	import { Stores, Components } from '@mark8t/core';
+	import Input from '../components/Input.svelte';
+	import Accordion from '../components/Accordion.svelte'; // The refactored accordion component
+	import { Stores } from '@mark8t/core';
 	export let unsavedChanges;
 	export let overrideOpenState;
-	let panelWebsite = false;
-	panelWebsite = localStorage.getObject('--panel--panelWebsite');
-	$: website = {};
+	let { Website } = Stores;
 
-	let data = {};
+	export let locked = false;
+	export let redirectUrl = '';
+	export let openExternally = false;
+
+	let panelWebsite = false;
+	panelWebsite = localStorage.getItem('--panel--panelWebsite') || false;
+
 	const standardFields = {
-		// 'siteAddress': '',
 		siteName: 'Site Name',
 		siteDescription: 'Site Description',
 		siteKeywords: 'Site Keywords'
-		// 'siteLogo': '',
-		// 'siteFavicon': '',
-		// 'siteUrl': '',
-		// 'siteContact': '',
-		// 'siteContactPhone': '',
-		// 'siteContactEmail': '',
 	};
 
-	if (overrideOpenState) panelWebsite = true;
+	// if (overrideOpenState === true) panelWebsite = true;
 
 	onMount(() => {
-		// Stores.Website.STORE_WEBSITE.subscribe((value) => {
-		// 	website = value || {};
-		// });
+		// Your subscription logic here
 	});
+
+	// Update the local storage when the accordion's state changes
+	const handlePanelToggle = (event) => {
+		panelWebsite = event.detail.open;
+		localStorage.setItem('--panel--panelWebsite', panelWebsite);
+	};
 </script>
 
-<Accordion>
-	<Panel
-		bind:open={panelWebsite}
-		on:click={(e) => {
-			localStorage.setObject('--panel--panelWebsite', panelWebsite);
-		}}
-	>
-		<Header>
-			<strong class="mdc-typography--headline6">Website</strong>
-			<IconButton slot="icon" toggle pressed={panelWebsite}>
-				<Icon class="material-icons" on>expand_less</Icon>
-				<Icon class="material-icons">expand_more</Icon>
-			</IconButton>
-		</Header>
-		<!-- <Content class="mdc-typography--body2">
-			{#each Object.entries(standardFields) as [key, value]}
-				<Components.Web.Static.Input
-					bind:value={website[key]}
-					label={value}
-					input={unsavedChanges}
-				/>
-			{/each}
-		</Content> -->
-	</Panel>
+<Accordion title="Website" initialState={overrideOpenState} {locked} {redirectUrl} {openExternally}>
+	{#each Object.entries(standardFields) as [key, label]}
+		<Input value={$Website[key]} {label} on:input={unsavedChanges} />
+	{/each}
 </Accordion>
+
+<style>
+	/* Custom styles if needed */
+</style>

@@ -38,8 +38,8 @@
 	}}
 />
 
-<aside class={Theme?.sidebar?.css?.aside}>
-	<div class={Theme?.sidebar?.css?.div}>
+<aside class={theme?.sidebar?.css?.aside}>
+	<div class={theme?.sidebar?.css?.div}>
 		<SidebarHeader {theme} {Core} />
 		<SidebarItems {theme} />
 	</div>

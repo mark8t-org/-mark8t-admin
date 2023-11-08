@@ -6,17 +6,17 @@ export let ThemePresets = (style, open, i = 1) => {
 			id: 0,
 			theme: 'acrylic dark',
 			sidebar: {
-				orientation: 'start',
+				orientation: 'end',
 				css: {
 					aside: `
-			top-0 scrollbar
-      bg-gray-900
-      h-screen
-      overflow-y-auto
-      lg:bg-transparent lg:block lg:relative lg:w-64 lg:z-auto
-      ${style.mobileOrientation[style.orientation]}
-      ${open ? 'absolute w-8/12 z-40 sm:w-5/12' : 'hidden'}
-			`,
+						top-0 scrollbar
+						bg-gray-900
+						h-screen
+						overflow-y-auto
+						lg:bg-transparent lg:block lg:relative lg:w-64 lg:z-auto
+						${style.mobileOrientation[style.orientation]}
+						${open ? 'absolute w-8/12 z-40 sm:w-5/12' : 'hidden'}
+					`,
 					div: 'pb-32 lg:pb-6'
 				}
 			},
@@ -24,7 +24,7 @@ export let ThemePresets = (style, open, i = 1) => {
 				css: {
 					title: `mx-4 text-sm`,
 					section: `font-medium mb-4 pl-5 text-gray-500 text-lg lg:pl-6`,
-					link: `flex items-center justify-start my-1 p-3 text-white w-full mica`,
+					link: `flex items-center justify-start my-1 p-3 text-white w-full`,
 					active: `border-white lg:border-red-300 border-l-4 lg:border-l-0 lg:border-r-4`
 				}
 			}

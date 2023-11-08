@@ -4,6 +4,7 @@
 
 	export let theme;
 	const style = { ...theme?.sidebarItems.css };
+	console.log('SidebarItems :: style', style);
 </script>
 
 <ul class="mt-6 md:pl-6">

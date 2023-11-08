@@ -1,4 +1,5 @@
 <script lang="ts">
+	import UserProfileButton from './../components/UserProfileButton.svelte';
 	import { base } from '$app/paths';
 	import { Services, Stores } from '@mark8t/core';
 
@@ -40,7 +41,8 @@
 		'bg-pink-500'
 	];
 
-	function setThemeColourBasedOnId(id: number) {
+	function setThemeColourBasedOnId(event: any, id: number) {
+		event.preventDefault();
 		Theme.set(themes[id]);
 	}
 
@@ -118,23 +120,7 @@
 		</small></a
 	>
 
-	<!-- -->
-	<div class="relative flex items-center">
-		<button
-			type="button"
-			id="signOut"
-			class="text-white focus:outline-none ml-2 flex items-center"
-			on:click={toggleMenu}
-		>
-			<span class="px-2 md:hidden lg:block">{$Account?.username}</span>
-			<span
-				id="label"
-				class={`${colour} rounded-full w-10 h-10 flex items-center justify-center ml-2`}
-			>
-				{getMultiNameInitials($Account)}
-			</span>
-		</button>
-	</div>
+	<UserProfileButton on:toggleMenu={toggleMenu} account={$Account} {colour} />
 </nav>
 <!-- <div
 	class={isOpen
@@ -145,8 +131,8 @@
 <div
 	class={(isOpen
 		? 'right-0 opacity-100 translate-y-0 absolute z-20'
-		: 'right-0 opacity-0 translate-y-1') +
-		' absolute left-50% transform -translate-x-50% mt-5 w-screen max-w-md px-4 transition ease-out duration-200 z-10'}
+		: 'right-0 opacity-0 translate-y-1  -z-10') +
+		' absolute left-50% transform -translate-x-50% mt-5 w-screen max-w-md px-4 transition ease-out duration-200'}
 >
 	<div
 		class="flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5"
@@ -240,7 +226,8 @@
 						<!-- Themes -->
 						{#each themes as theme}
 							<div
-								on:click={() => setThemeColourBasedOnId(theme.id)}
+								on:click={(evt) => setThemeColourBasedOnId(evt, theme.id)}
+								on:keydown={(evt) => setThemeColourBasedOnId(evt, theme.id)}
 								role="button"
 								tabindex="0"
 								class={' hover:opacity-75'}

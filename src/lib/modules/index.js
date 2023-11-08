@@ -4,19 +4,32 @@ import Website from './Website.svelte';
 import Keys from './Keys.svelte';
 import Products from './Products.svelte';
 import Emails from './Emails.svelte';
-import i18n from './i18n.svelte';
+import I18n from './i18n.svelte';
 import EmailsPreview from './EmailsPreview.svelte';
+import Dashboard from './Dashboard.svelte';
 import Backup from './Backup.svelte';
 
 
-export { EmailsPreview };
+export {
+	// EmailsPreview,
+	Account,
+	Contact,
+	Website,
+	Products,
+	Emails,
+	I18n,
+	Keys,
+	Dashboard,
+	Backup
+}
 export default {
 	Account,
 	Contact,
 	Website,
 	Products,
 	Emails,
-	i18n,
+	I18n,
 	Keys,
+	Dashboard,
 	Backup
 }

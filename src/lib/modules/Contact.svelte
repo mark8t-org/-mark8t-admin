@@ -1,81 +1,43 @@
-<script>
-	import { onMount } from 'svelte';
-	import { Panel, Header, Content } from '@smui-extra/accordion';
-	import IconButton, { Icon } from '@smui/icon-button';
-	import Textfield from '@smui/textfield';
-	import { Stores, Components } from '@mark8t/core';
+<script lang="ts">
+	import Input from '../components/Input.svelte'; // Assuming you have a Tailwind-styled Input component
+	import Accordion from '../components/Accordion.svelte'; // The refactored accordion component
 
-	let panelInfo = false;
-	let panelContactInfo = false;
-	panelInfo = localStorage.getObject('--panel--panelInfo');
-	panelContactInfo = localStorage.getObject('--panel--panelContactInfo');
-	$: account = {};
-	$: website = {};
+	import { Stores } from '@mark8t/core';
+	let { Account, Website } = Stores;
+	export let locked = false;
+	export let redirectUrl = '';
+	export let openExternally = false;
 
-	export let unsavedChanges;
-	export let overrideOpenState;
+	let overrideOpenState;
+	let panelContactInfo = localStorage.getObject('--panel--panelContactInfo');
 
-	const unsavedAreYouSureChanges = () => {
-		if (confirm('are you sure you want to change this?')) {
-			unsavedChanges();
-		} else {
-			getLatestDataFromLocalStorage();
-		}
+	// Update the local storage when the accordion's state changes
+	const handlePanelToggle = (event) => {
+		console.log(event.detail.open);
+		localStorage.setObject('--panel--panelContactInfo', event.detail.open);
 	};
-
-	onMount(() => {
-		Stores.Account.subscribe((value) => {
-			account = value || {};
-		});
-		// Stores.Website.STORE_WEBSITE.subscribe((value) => {
-		// 	website = value || {};
-		// });
-		if (overrideOpenState) panelInfo = true;
-	});
 </script>
 
-<!-- CONTACT INFO -->
-<Panel
-	bind:open={panelContactInfo}
-	on:click={(e) => {
-		localStorage.setObject('--panel--panelContactInfo', panelContactInfo);
-	}}
+<Accordion
+	title="Contact & Social"
+	initialState={panelContactInfo === {} ? false : panelContactInfo}
+	{locked}
+	{redirectUrl}
+	{openExternally}
+	on:change={handlePanelToggle}
 >
-	<Header>
-		<strong class="mdc-typography--headline6">Contact & Social</strong>
-		<span slot="description" />
-		<IconButton slot="icon" toggle pressed={panelContactInfo}>
-			<Icon class="material-icons" on>expand_less</Icon>
-			<Icon class="material-icons">expand_more</Icon>
-		</IconButton>
-	</Header>
-	<Content>
-		<!-- <Components.Web.Static.Input
-			label="Phone"
-			class="w-100"
-			type="tel"
-			pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-			maxlength="17"
-			bind:value={website.siteContactPhone}
-			input={unsavedChanges}
-		/>
-		<Components.Web.Static.Input
-			label="Email"
-			class="w-100"
-			bind:value={website.siteContactEmail}
-			input={unsavedChanges}
-		/>
-		<Components.Web.Static.Input
-			label="Facebook"
-			class="w-100"
-			bind:value={website.siteContactFacebook}
-			input={unsavedChanges}
-		/>
-		<Components.Web.Static.Input
-			label="Instagram"
-			class="w-100"
-			bind:value={website.siteContactInstagram}
-			input={unsavedChanges}
-		/> -->
-	</Content>
-</Panel>
+	<Input
+		label="Phone"
+		type="tel"
+		pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+		maxlength="17"
+		bind:value={$Website.siteContactPhone}
+	/>
+	<Input label="Email" bind:value={$Website.siteContactEmail} />
+	<Input label="Facebook" bind:value={$Website.siteContactFacebook} />
+	<Input label="Instagram" bind:value={$Website.siteContactInstagram} />
+</Accordion>
+
+<style>
+	/* Add any custom styles or overrides here */
+</style>

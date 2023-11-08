@@ -1,51 +1,46 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Panel, Header, Content } from '@smui-extra/accordion';
-	import IconButton, { Icon } from '@smui/icon-button';
 
 	import { Components, Stores } from '@mark8t/core';
+	import Input from '../components/Input.svelte';
+	import Accordion from '../components/Accordion.svelte';
 
-	export let unsavedChanges;
+	export let unsavedChanges: () => void;
 	export let overrideOpenState = false;
 
 	let { Account, Website } = Stores;
-
 	let panelInfo = false;
-	panelInfo = localStorage.getObject('--panel--panelInfo');
+	export let locked = false;
+	export let redirectUrl = '';
+	export let openExternally = false;
 
-	//...
+	// Retrieve panel state from local storage or default
+	panelInfo = localStorage.getItem('--panel--panelInfo') || false;
+
 	function unsavedAreYouSureChanges() {
-		if (confirm('are you sure you want to change this?')) {
+		if (confirm('Are you sure you want to discard changes?')) {
 			unsavedChanges();
 		} else {
-			getLatestDataFromLocalStorage();
+			// Get latest data from local storage or another source
+			// getLatestDataFromLocalStorage();
 		}
 	}
 
-	if (overrideOpenState) panelInfo = true;
+	onMount(() => {
+		console.log(Components);
+		console.log(panelInfo);
+	});
+
+	$: if (panelInfo) {
+		// Code to handle when panel is open
+	} else {
+		// Code to handle when panel is closed
+	}
 </script>
 
-<Panel
-	bind:open={panelInfo}
-	on:click={(e) => {
-		localStorage.setObject('--panel--panelInfo', panelInfo);
-	}}
->
-	<Header style="cursor:pointer;">
-		<strong class="mdc-typography--headline6">Account</strong>
-		<IconButton slot="icon" toggle pressed={panelInfo} hidden={overrideOpenState}>
-			<Icon class="material-icons" on>expand_less</Icon>
-			<Icon class="material-icons">expand_more</Icon>
-		</IconButton>
-	</Header>
-	<Content>
-		<!-- <Components.Web.Static.Input label="Name" value={$Account?.name} disabled={true} />
-		<Components.Web.Static.Input label="Username" value={$Account?.username} disabled={true} />
-		<Components.Web.Static.Input label="Tenant" value={$Website?.siteName} disabled={true} />
-		<Components.Web.Static.Input
-			label="Tenant ID"
-			value={$Account?.localAccountId}
-			disabled={true}
-		/> -->
-	</Content>
-</Panel>
+<Accordion title="Account" initialState={overrideOpenState} {locked} {redirectUrl} {openExternally}>
+	<Input label="Name" value={$Account?.name} disabled={true} />
+	<Input label="Username" value={$Account?.username} disabled={true} />
+	<Input label="Tenant" value={$Website?.siteName} disabled={true} />
+	<Input label="Tenant ID" value={$Account?.localAccountId} disabled={true} />
+</Accordion>

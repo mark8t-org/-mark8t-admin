@@ -3,20 +3,8 @@
 
 	import { base } from '$app/paths';
 
-	import Card, { PrimaryAction, Actions, ActionButtons, ActionIcons } from '@smui/card';
+	import Accordion from '../components/Accordion.svelte';
 
-	// import AdminDrawer from "../admin/AdminDrawer.svelte";
-
-	// import Input from "@smui/textfield";
-	// import Checkbox from "@smui/checkbox";
-	// import FormField from "@smui/form-field";
-	import Button, { Label } from '@smui/button';
-	import Banner, { CloseReason } from '@smui/banner';
-	import IconButton, { Icon } from '@smui/icon-button';
-	// import Paper, { Title, Subtitle } from "@smui/paper";
-	// import TopAppBar, { Row, Section } from "@smui/top-app-bar";
-	import Accordion, { Panel, Header, Content } from '@smui-extra/accordion';
-	import List, { Item, Text, Graphic, Separator, Subheader } from '@smui/list';
 	import Product from '../admin/Product.svelte';
 	import '../admin/View.svelte.scss?inline';
 	// import ContactList from "../ContactList.svelte";
@@ -29,11 +17,11 @@
 	// import { _NEW_PRODUCT_ } from '../../schema.js';
 	import { Utils, Stores } from '@mark8t/core';
 
-	const Products = Stores.Products.Catelogue;
+	const Products = Stores.Products;
 	const Website = Stores.Website;
 	const Google = Stores.Google;
 	const Account = Stores.Account;
-
+	export let overrideOpenState;
 	export let override = false;
 	let productContainer;
 	let layoutContainer;
@@ -42,12 +30,9 @@
 	let centered = false;
 	let mobileStacked = true;
 
-	const closedReasons = {
-		[CloseReason.PRIMARY]: 'Primary',
-		[CloseReason.SECONDARY]: 'Secondary',
-		[CloseReason.UNSPECIFIED]: 'Unspecified'
-	};
-	let closedReason = 'None yet.';
+	export let locked = false;
+	export let redirectUrl = '';
+	export let openExternally = false;
 
 	let openDialogForEditing = false;
 	let data = {};
@@ -56,7 +41,7 @@
 	let open = false;
 	let active = 'Inbox';
 
-	let panelProducts = false;
+	let panelProducts = true;
 
 	let layoutSelected;
 	$: account = {};
@@ -74,6 +59,13 @@
 		}
 	];
 
+	// Function to handle external opening
+	function handleExternalOpen() {
+		if (openExternally && redirectUrl) {
+			window.open(redirectUrl, '_blank');
+		}
+	}
+
 	let AreYouSureChanges = 'are you sure you want to change this?';
 
 	// import {
@@ -83,11 +75,6 @@
 	import Overview from '../admin/Overview.svelte';
 	import OverviewModules from '../admin/OverviewModules.svelte';
 	import SavedChanges from '../admin/SavedChanges.svelte';
-
-	//
-	function handleBannerClosed(event) {
-		closedReason = closedReasons[event.detail.reason];
-	}
 
 	//
 	function setActive(value) {
@@ -218,74 +205,24 @@
 	});
 </script>
 
-<Panel
-	bind:open={panelProducts}
-	on:click={(e) => {
-		localStorage.setObject('--panel--panelProducts', panelProducts);
-	}}
+<Accordion
+	title="Products"
+	initialState={overrideOpenState}
+	{locked}
+	{redirectUrl}
+	{openExternally}
 >
-	<Header>
-		<strong class="mdc-typography--headline6">Products</strong>
-		<IconButton slot="icon" toggle pressed={panelProducts}>
-			<Icon class="material-icons" on>expand_less</Icon>
-			<Icon class="material-icons">expand_more</Icon>
-		</IconButton>
-
-		<Button
-			raised
-			disabled={!panelProducts}
-			on:click={(e) => {
-				onAddProduct();
-				e.preventDefault();
-				e.stopPropagation();
-			}}>Add New</Button
+	<div class="flex flex-wrap justify-center overflow-auto">
+		<!-- Add New Product Card -->
+		<div
+			class="m-2 p-4 min-w-[275px] min-h-[275px] bg-white border border-dashed border-gray-300 rounded flex items-center justify-center cursor-pointer"
+			on:click={onAddProduct}
 		>
-		<Button
-			raised
-			on:click={(e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				window.location.href = base + '/admin/products';
-			}}>View All</Button
-		>
-		<!-- <Button raised on:click={onAddProduct}>View All</Button> -->
-	</Header>
-	<Content
-		bind:this={productContainer}
-		style="display:flex;overflow:auto;flex-flow:wrap;justify-content:center;"
-		on:wheel={handleWheel}
-	>
-		<Card style="min-width:275px;min-height:275px;margin:0.5rem;" on:click={onAddProduct}>
-			<span class="plus">+</span>
-			<Content>{''}</Content>
-			<Actions style="opacity:0; user-events:none;">
-				<ActionButtons>
-					<Button
-						on:click={() => {
-							openDialogForEditing = true;
-						}}
-					>
-						<Label>Edit</Label>
-					</Button>
-					<Button style="color:red;" on:click={() => clicked++}>
-						<Label>Delete</Label>
-					</Button>
-				</ActionButtons>
-			</Actions>
-		</Card>
-		{#each $Products as product, i}
+			<span class="text-6xl text-gray-300">+</span>
+		</div>
+		<!-- Product Cards -->
+		{#each products as product, i}
 			<Product {product} {removeProduct} {unsavedChanges} />
 		{/each}
-	</Content>
-</Panel>
-
-<style>
-	.plus {
-		content: '\003F';
-		opacity: 0.1;
-		left: 32%;
-		top: 40%;
-		font-size: 166px;
-		position: absolute;
-	}
-</style>
+	</div>
+</Accordion>
