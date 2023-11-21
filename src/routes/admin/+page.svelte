@@ -7,7 +7,7 @@
 	import type Mark8tCore from '@mark8t/core';
 	import TableWithPagination from '$lib/components/TableWithPagination.svelte';
 
-	export let example: boolean = true;
+	export let example: boolean = false;
 	export let title;
 
 	const unsavedChanges = () => {};

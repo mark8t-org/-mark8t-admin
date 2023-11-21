@@ -24,6 +24,9 @@
 		if (storedState) {
 			expanded.set(storedState === 'true');
 		}
+		if (locked) {
+			expanded.set(true);
+		}
 	}
 
 	// Whenever the expanded state changes, write the new state to localStorage
@@ -36,11 +39,14 @@
 	let click = () => {};
 
 	function toggle() {
+		console.log('toggle', locked, disabled, $expanded);
 		if (locked && redirectUrl) {
 			goto(redirectUrl);
 			// window.location.href = redirectUrl;
+			return;
 		} else if (!disabled) {
-			expanded.update((n) => !n);
+			if (!locked) expanded.update((n) => !n);
+			return;
 		}
 		dispatch('change', { open: $expanded });
 	}

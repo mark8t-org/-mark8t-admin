@@ -1,7 +1,7 @@
 import { browser } from '$app/environment';
 
 export const csr = true;
-export const prerender = true;
+export const prerender = false;
 export const ssr = true;
 
 // use sessions storage to ensure that Tenant has been loaded before rendering the page but not to call the server on subsuquent page loads
@@ -20,7 +20,7 @@ export async function load({ fetch }) {
 				Admin: Admin,
 				Modules: Modules,
 				Latest: await Core.Services.getLatestModified(fetch),
-				Tenant: await Core.Services.Tenant.get(),
+				Tenant: await Core.Services.Tenant.fetch(),
 			}
 		};
 	}

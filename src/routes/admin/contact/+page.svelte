@@ -17,7 +17,13 @@
 {#if Core}
 	{#if Admin}
 		{#if Modules}
-			<Modules.Contact {unsavedChanges} overrideOpenState={true} />
+			<Modules.Contact
+				{unsavedChanges}
+				overrideOpenState={true}
+				locked={true}
+				disabled={true}
+				initialState={true}
+			/>
 		{/if}
 	{/if}
 {/if}

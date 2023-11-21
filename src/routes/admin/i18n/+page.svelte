@@ -17,7 +17,13 @@
 {#if Core}
 	{#if Admin}
 		{#if Modules}
-			<Modules.i18n {unsavedChanges} overrideOpenState={true} />
+			<Modules.i18n
+				{unsavedChanges}
+				overrideOpenState={true}
+				locked={true}
+				disabled={true}
+				initialState={true}
+			/>
 		{/if}
 	{/if}
 {/if}

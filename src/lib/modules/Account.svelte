@@ -5,6 +5,8 @@
 	import Input from '../components/Input.svelte';
 	import Accordion from '../components/Accordion.svelte';
 
+	import Theme from '../stores/Theme';
+
 	export let unsavedChanges: () => void;
 	export let overrideOpenState = false;
 
@@ -17,20 +19,6 @@
 	// Retrieve panel state from local storage or default
 	panelInfo = localStorage.getItem('--panel--panelInfo') || false;
 
-	function unsavedAreYouSureChanges() {
-		if (confirm('Are you sure you want to discard changes?')) {
-			unsavedChanges();
-		} else {
-			// Get latest data from local storage or another source
-			// getLatestDataFromLocalStorage();
-		}
-	}
-
-	onMount(() => {
-		console.log(Components);
-		console.log(panelInfo);
-	});
-
 	$: if (panelInfo) {
 		// Code to handle when panel is open
 	} else {
@@ -39,8 +27,32 @@
 </script>
 
 <Accordion title="Account" initialState={overrideOpenState} {locked} {redirectUrl} {openExternally}>
-	<Input label="Name" value={$Account?.name} disabled={true} />
-	<Input label="Username" value={$Account?.username} disabled={true} />
-	<Input label="Tenant" value={$Website?.siteName} disabled={true} />
-	<Input label="Tenant ID" value={$Account?.localAccountId} disabled={true} />
+	<Input
+		on:input={unsavedChanges}
+		theme={$Theme.theme.includes('dark') ? 'dark' : 'light'}
+		label="Name"
+		value={$Account?.name == 'unknown' ? 'No name set' : 'error'}
+		adisabled={true}
+	/>
+	<Input
+		on:input={unsavedChanges}
+		theme={$Theme.theme.includes('dark') ? 'dark' : 'light'}
+		label="Username"
+		value={$Account.username}
+		adisabled={true}
+	/>
+	<Input
+		on:input={unsavedChanges}
+		theme={$Theme.theme.includes('dark') ? 'dark' : 'light'}
+		label="Tenant"
+		value={$Website.siteName}
+		adisabled={true}
+	/>
+	<Input
+		on:input={unsavedChanges}
+		theme={$Theme.theme.includes('dark') ? 'dark' : 'light'}
+		label="Tenant ID"
+		value={$Account.localAccountId}
+		adisabled={true}
+	/>
 </Accordion>

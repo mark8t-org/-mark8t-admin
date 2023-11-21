@@ -17,7 +17,13 @@
 {#if Core}
 	{#if Admin}
 		{#if Modules}
-			<Modules.EmailsPreview {unsavedChanges} overrideOpenState={true} />
+			<Modules.EmailsPreview
+				{unsavedChanges}
+				overrideOpenState={true}
+				locked={true}
+				disabled={true}
+				initialState={true}
+			/>
 		{/if}
 	{/if}
 {/if}

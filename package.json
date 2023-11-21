@@ -10,6 +10,7 @@
 		"prepublishOnly": "npm run package",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"clean": "npx rimraf .parcel-cache && npx rimraf node_modules",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test:unit": "vitest",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",

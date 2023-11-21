@@ -17,7 +17,13 @@
 {#if Core}
 	{#if Admin}
 		{#if Modules}
-			<Modules.Account {unsavedChanges} overrideOpenState={true} />
+			<Modules.Account
+				{unsavedChanges}
+				overrideOpenState={true}
+				locked={true}
+				disabled={true}
+				initialState={true}
+			/>
 		{/if}
 	{/if}
 {/if}
